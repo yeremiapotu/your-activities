@@ -3,5 +3,5 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/daily-activities/", // <-- ganti dengan nama repository GitHub kamu
+  base: "/your-activities/", // <-- ganti dengan nama repository GitHub kamu
 });
