@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* optional: sedikit tuning untuk dark bg transparan */
+.dark .bg-gray-750\/50 {
+  background-color: rgba(31, 41, 55, 0.5);
+}
