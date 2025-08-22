@@ -18,8 +18,8 @@ export default function ActivityForm({ onAdd }) {
     <form onSubmit={submit} className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow space-y-3 border border-gray-200 dark:border-gray-700">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <input required type="text" placeholder="Nama aktivitas" value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2" />
-        <input required type="time" value={start} onChange={(e) => setStart(e.target.value)} className="w-full rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2" />
-        <input type="time" value={end} onChange={(e) => setEnd(e.target.value)} className="w-full rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2" />
+        <input required type="time" placeholder="--:--" value={start} onChange={(e) => setStart(e.target.value)} className="w-full rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2" />
+        <input type="time" placeholder="--:--" value={end} onChange={(e) => setEnd(e.target.value)} className="w-full rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-3 py-2" />
       </div>
       <div className="flex justify-center">
         <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl" type="submit">

@@ -1,19 +1,12 @@
 import { useMemo, useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-export default function ActivityList({
-  title,
-  activities,
-  onToggle, // (id) => void
-  onUpdate, // (id, patch) => void
-  onDelete, // (id) => void
-}) {
+export default function ActivityList({ title, activities, onToggle, onUpdate, onDelete }) {
   const [editMode, setEditMode] = useState(false);
-
   const completed = useMemo(() => activities.filter((a) => a.done).length, [activities]);
 
   return (
-    <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow">
+    <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow relative">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
         <div>
@@ -22,6 +15,8 @@ export default function ActivityList({
             {completed} selesai • {activities.length} total
           </p>
         </div>
+
+        {/* Tombol Edit */}
         <button
           onClick={() => setEditMode((v) => !v)}
           className={`px-3 py-1 rounded-xl text-white ${editMode ? "bg-green-600 hover:bg-green-700" : "bg-yellow-500 hover:bg-yellow-600"}`}
@@ -39,9 +34,8 @@ export default function ActivityList({
           <ul className="space-y-3">
             {activities.map((act) => (
               <li key={act.id} className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-750/50 px-3 py-2">
-                {/* Bagian Kiri: Nama + Waktu */}
+                {/* Nama & Waktu */}
                 <div className="flex-1">
-                  {/* Baris 1: nama */}
                   <div className="flex items-center gap-3">
                     {!editMode ? (
                       <span className={`font-medium ${act.done ? "line-through text-green-500" : ""}`}>{act.name}</span>
@@ -55,7 +49,7 @@ export default function ActivityList({
                     )}
                   </div>
 
-                  {/* Baris 2: waktu */}
+                  {/* Waktu */}
                   <div className="mt-1 text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
                     {!editMode ? (
                       <span>{act.start && act.end ? `${act.start} - ${act.end}` : act.start ? act.start : act.end ? act.end : "??:??"}</span>
@@ -73,10 +67,20 @@ export default function ActivityList({
                   </div>
                 </div>
 
-                {/* Checklist hanya muncul kalau editMode = false */}
-                {!editMode && <input type="checkbox" checked={act.done} onChange={() => onToggle(act.id)} className="w-5 h-5 accent-green-500 cursor-pointer self-center" title={act.done ? "Sudah selesai" : "Tandai selesai"} />}
+                {/* Checklist */}
+                {!editMode && (
+                  <input
+                    type="checkbox"
+                    checked={act.done}
+                    onChange={() => {
+                      if (!act.done) onToggle(act.id); // ✅ hanya centang, tidak bisa uncheck
+                    }}
+                    className="w-5 h-5 accent-green-500 cursor-pointer self-center"
+                    title={act.done ? "Sudah selesai" : "Tandai selesai"}
+                  />
+                )}
 
-                {/* Tombol hapus hanya muncul saat editMode */}
+                {/* Tombol hapus */}
                 {editMode && (
                   <button onClick={() => onDelete(act.id)} className="self-center p-2 rounded-lg bg-red-500 hover:bg-red-600 text-white flex items-center justify-center" title="Hapus aktivitas ini">
                     <TrashIcon className="w-5 h-5" />
