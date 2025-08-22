@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
 export default function ActivityList({
   title,
@@ -13,6 +14,7 @@ export default function ActivityList({
 
   return (
     <section className="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow">
+      {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
         <div>
           <h2 className="text-lg font-semibold">{title}</h2>
@@ -29,26 +31,20 @@ export default function ActivityList({
         </button>
       </div>
 
+      {/* Body */}
       <div className="p-4">
         {activities.length === 0 ? (
           <p className="text-sm text-gray-600 dark:text-gray-300 text-center">Belum ada aktivitas untuk hari ini.</p>
         ) : (
           <ul className="space-y-3">
             {activities.map((act) => (
-              <li key={act.id} className="flex items-start justify-between gap-3 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-750/50 px-3 py-2">
+              <li key={act.id} className="flex items-center justify-between gap-3 rounded-xl border border-gray-200 dark:border-gray-700 dark:bg-gray-750/50 px-3 py-2">
+                {/* Bagian Kiri: Nama + Waktu */}
                 <div className="flex-1">
-                  {/* Baris 1: nama + checkbox (disabled saat editMode) */}
+                  {/* Baris 1: nama */}
                   <div className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      checked={act.done}
-                      onChange={() => !editMode && !act.done && onToggle(act.id)}
-                      disabled={editMode || act.done}
-                      className="w-5 h-5 accent-blue-600 cursor-pointer disabled:cursor-not-allowed"
-                      title={editMode ? "Nonaktif saat edit mode" : act.done ? "Sudah selesai" : "Tandai selesai"}
-                    />
                     {!editMode ? (
-                      <span className={`font-medium ${act.done ? "line-through text-gray-500" : ""}`}>{act.name}</span>
+                      <span className={`font-medium ${act.done ? "line-through text-green-500" : ""}`}>{act.name}</span>
                     ) : (
                       <input
                         type="text"
@@ -58,12 +54,11 @@ export default function ActivityList({
                       />
                     )}
                   </div>
+
                   {/* Baris 2: waktu */}
-                  <div className="pl-8 mt-1 text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                  <div className="mt-1 text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2">
                     {!editMode ? (
-                      <span>
-                        {act.start || "??:??"} - {act.end || "??:??"}
-                      </span>
+                      <span>{act.start && act.end ? `${act.start} - ${act.end}` : act.start ? act.start : act.end ? act.end : "??:??"}</span>
                     ) : (
                       <>
                         <input
@@ -72,17 +67,19 @@ export default function ActivityList({
                           onChange={(e) => onUpdate(act.id, { start: e.target.value })}
                           className="rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-2 py-1"
                         />
-                        <span>—</span>
                         <input type="time" value={act.end || ""} onChange={(e) => onUpdate(act.id, { end: e.target.value })} className="rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-2 py-1" />
                       </>
                     )}
                   </div>
                 </div>
 
-                {/* Aksi kanan: Hapus muncul saat editMode */}
+                {/* Checklist hanya muncul kalau editMode = false */}
+                {!editMode && <input type="checkbox" checked={act.done} onChange={() => onToggle(act.id)} className="w-5 h-5 accent-green-500 cursor-pointer self-center" title={act.done ? "Sudah selesai" : "Tandai selesai"} />}
+
+                {/* Tombol hapus hanya muncul saat editMode */}
                 {editMode && (
-                  <button onClick={() => onDelete(act.id)} className="self-center px-3 py-1 rounded-lg bg-red-500 hover:bg-red-600 text-white" title="Hapus aktivitas ini">
-                    Hapus
+                  <button onClick={() => onDelete(act.id)} className="self-center p-2 rounded-lg bg-red-500 hover:bg-red-600 text-white flex items-center justify-center" title="Hapus aktivitas ini">
+                    <TrashIcon className="w-5 h-5" />
                   </button>
                 )}
               </li>

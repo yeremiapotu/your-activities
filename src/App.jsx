@@ -71,7 +71,7 @@ export default function App() {
               key={d}
               onClick={() => setSelectedDay(d)}
               className={`px-3 py-1 rounded-lg font-medium shadow border dark:border-gray-700
-                ${selectedDay === d ? "bg-blue-600 text-white" : "bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700"}`}
+                ${selectedDay === d ? "bg-green-500 text-white" : "bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700"}`}
             >
               {d}
             </button>
